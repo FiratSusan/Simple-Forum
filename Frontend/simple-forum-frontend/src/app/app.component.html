@@ -1,17 +1,66 @@
 <div class="flex-horizontal fill">
   <mat-toolbar>
-    Verteilte Systeme Labor - Mini Forum
+    {{title}}
   </mat-toolbar>
-  <mat-tab-group class="fill">
-    <mat-tab label="Overview">
-      <mat-nav-list>
-        <a mat-list-item>Item 1</a>
-        <a mat-list-item>Item 2</a>
-        <a mat-list-item>Item 3</a>
-      </mat-nav-list>
+  <mat-tab-group class="fill"  [(selectedIndex)]="selectedTab">
+    <mat-tab label="Overview" (selectedTabChange)="Reload()">
+      <ng-container *ngIf="!topics">
+        No Topics yet.
+      </ng-container>
+      <!--<mat-nav-list>
+        <a mat-list-item *ngFor="let topic of topics">{{topic.title}}</a>
+      </mat-nav-list>!-->
+      <ng-container *ngIf="topics">
+        <mat-accordion>
+          <mat-expansion-panel *ngFor="let topic of topics">
+            <mat-expansion-panel-header>
+              <mat-panel-title>
+                {{topic.title}}
+              </mat-panel-title>
+              <mat-panel-description>
+                {{topic.posts[0].content.slice(0,10)+'...'}}
+              </mat-panel-description>
+            </mat-expansion-panel-header>
+
+            <mat-list>
+              <mat-list-item *ngFor="let post of topic.posts">{{post.created | date:'short' }}  |  {{post.content}}</mat-list-item>
+            </mat-list>
+            <form class="form">
+              <mat-form-field class="full-width text-area-height">
+                <textarea matInput
+                    cdkTextareaAutosize
+                    placeholder="Your post"
+                    name="Post"
+                    [(ngModel)]="np_content"></textarea>
+              </mat-form-field>
+              <button
+                [disabled]="np_content===''"
+                mat-raised-button
+                color="primary"
+                (click)="createPost(topic, np_content)">Create Post</button>
+            </form>
+          </mat-expansion-panel>
+        </mat-accordion>
+      </ng-container>
     </mat-tab>
     <mat-tab label="New Topic">
-      Add new Topic here
+      <form class="form">
+        <mat-form-field class="full-width">
+          <input matInput placeholder="Title" name="Title" [(ngModel)]="nt_title">
+        </mat-form-field>
+        <mat-form-field class="full-width text-area-height">
+          <textarea matInput
+                    cdkTextareaAutosize
+                    placeholder="Your post"
+                    name="Post"
+                    [(ngModel)]="nt_content"></textarea>
+        </mat-form-field>
+        <button
+          [disabled]="nt_title==='' || nt_content===''"
+          mat-raised-button
+          color="primary"
+          (click)="createTopic()">Create Topic</button>
+      </form>
     </mat-tab>
   </mat-tab-group>
 </div>

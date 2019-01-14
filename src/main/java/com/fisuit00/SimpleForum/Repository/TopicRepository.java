@@ -12,5 +12,5 @@ public interface TopicRepository extends JpaRepository<Topic, Long> {
     List<Topic> findAllByOrderByCreatedDesc();
 
     //@Query("SELECT t.id, t.title, t.created FROM Topic t ORDER BY Created DESC")
-    List<WithOutPosts> findAllBy();
+    List<Topic> findAllBy();
 }

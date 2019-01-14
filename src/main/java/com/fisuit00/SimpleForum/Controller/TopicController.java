@@ -11,13 +11,14 @@ import java.util.Dictionary;
 import java.util.List;
 
 @RestController
+@CrossOrigin(origins = "http://localhost:4200")
 public class TopicController {
 
     @Autowired
     private TopicRepository topicRepo;
 
     @GetMapping("topic/all")
-    public List<WithOutPosts> GetTopics(){
+    public List<Topic> GetTopics(){
         return topicRepo.findAllBy();
     }
 
